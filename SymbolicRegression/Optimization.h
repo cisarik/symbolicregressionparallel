@@ -49,7 +49,7 @@
 @property(readwrite) double bl_;
 @property(readwrite) double bu_;
 
--(id) initWithFunctionSet:(uint64)bin andDefaultMethod:(NSString*)name;
+-(instancetype) initWithFunctionSet:(uint64)bin andDefaultMethod:(NSString*)name NS_DESIGNATED_INITIALIZER;
 -(void) search;
 -(void) free;
 

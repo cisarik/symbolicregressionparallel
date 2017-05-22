@@ -10,7 +10,7 @@
 //#import "BlindSearch.h"
 #import "Heuristic.h"
 #import "MersenneTwister.h"
-NSLock *lock;
+//NSLock *lock;
 @import Cocoa;
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
     MersenneTwister *mt;

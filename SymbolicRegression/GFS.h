@@ -41,7 +41,7 @@ typedef double (^input3D)(double,double);
 @end
 
 @protocol GFS0args <NSObject>
--(double) eval;
+@property (NS_NONATOMIC_IOSONLY, readonly) double eval;
 @end
 
 @protocol GFSvariable <NSObject>
@@ -71,15 +71,15 @@ typedef double (^input3D)(double,double);
 @interface GFSvar : GFSelement <GFSvariable>{
     double* variable;
 }
--(id)initWith:(double *)n name:(NSString *)s;
--(double)value;
+-(instancetype)initWith:(double *)n name:(NSString *)s NS_DESIGNATED_INITIALIZER;
+@property (NS_NONATOMIC_IOSONLY, readonly) double value;
 @end
 
 @interface GFSconst : GFSelement <GFSconstant>{
     double* constant;
 }
--(id)initWith:(double *)n;
--(double)value;
+-(instancetype)initWith:(double *)n NS_DESIGNATED_INITIALIZER;
+@property (NS_NONATOMIC_IOSONLY, readonly) double value;
 @end
 
 @interface GFS1 : GFSelement <GFS1args>{
@@ -97,7 +97,7 @@ typedef double (^input3D)(double,double);
 @interface GFS0 : GFSelement <GFS0args>{
     func0 function;
 }
--(double) eval;
+@property (NS_NONATOMIC_IOSONLY, readonly) double eval;
 @end
 
 @interface FS : NSObject {
@@ -124,7 +124,7 @@ typedef double (^input3D)(double,double);
     int  lastrepairing_static;
     int  lastbigger_static;
 }
--(id)initWithArray:(int*)a andRepairing:(int*)b;
+-(instancetype)initWithArray:(int*)a andRepairing:(int*)b;
 -(void)nullCalculation;
 @end
 
@@ -190,7 +190,7 @@ typedef double (^input3D)(double,double);
 
 -(void)reinforceWith:(NSString *)s;
 
--(id)initWithFunctionSet:(uint64)fsb andSeed:(uint32)seed;
+-(instancetype)initWithFunctionSet:(uint64)fsb andSeed:(uint32)seed NS_DESIGNATED_INITIALIZER;
 
 -(NSString *)toStringRecursive:(int[])array at:(int) i last:(int*)last max:
 
@@ -216,7 +216,7 @@ typedef double (^input3D)(double,double);
 
 -(void)null;
 
--(NSString *)description;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *description;
 
 @end
 
@@ -228,11 +228,11 @@ typedef double (^input3D)(double,double);
 @property int endmarker;
 @property NSString *tex;
 
--(double)eval;
--(id)initWithArray:(int [])n andGFS:(GFS *)gfs repairing:(int[])rep;
--(id)initWithString:(NSString *)s andGFS:(GFS*)g;
--(int*)getArray;
--(int)getEnd;
+@property (NS_NONATOMIC_IOSONLY, readonly) double eval;
+-(instancetype)initWithArray:(int [])n andGFS:(GFS *)gfs repairing:(int[])rep NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithString:(NSString *)s andGFS:(GFS*)g NS_DESIGNATED_INITIALIZER;
+@property (NS_NONATOMIC_IOSONLY, getter=getArray, readonly) int *array;
+@property (NS_NONATOMIC_IOSONLY, getter=getEnd, readonly) int end;
 @end
 
 @interface OUT : NSObject {
@@ -244,9 +244,9 @@ typedef double (^input3D)(double,double);
 @property (readwrite,retain) GFS* gfs;
 @property (readwrite) NSDictionary *configuration;
 @property (readwrite) NSMutableDictionary *calculations;
--(id)initWithConfiguration:(NSDictionary*) conf andGFS:(GFS*)gfs;
+-(instancetype)initWithConfiguration:(NSDictionary*) conf andGFS:(GFS*)gfs NS_DESIGNATED_INITIALIZER;
 -(BOOL)insertFitness:(double)i string:(NSString*)s ofMethod:(NSString*)m;
--(NSString*)description;
--(NSString*)bestDescription;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *description;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *bestDescription;
 @end
 

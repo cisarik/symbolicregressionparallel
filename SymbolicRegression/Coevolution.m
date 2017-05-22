@@ -56,7 +56,7 @@
 }
 
 // Instantiation
--(id)initAndSeed:(unsigned int) seed{
+-(instancetype)initAndSeed:(unsigned int) seed{
     self = [super init];
     if (self) {
         
@@ -67,18 +67,18 @@
         evolutions=[[NSMutableArray alloc]init];
         
         // load all needed configuration from Configuration class:
-        vect = [[Configuration all] objectForKey:@"MDME_vectors"];
-        generations = [[Configuration all] objectForKey:@"MDME_generations"];
-        scalingFactor = [[Configuration all] objectForKey:@"MDME_scalingFactor"];
-        crossProb = [[Configuration all] objectForKey:@"MDME_crossProb"];
-        mutProb = [[Configuration all] objectForKey:@"MDME_mutProb"];
-        migProb = [[Configuration all] objectForKey:@"MDME_migProb"];
-        migrations = [[Configuration all] objectForKey:@"MDME_migrations"];
+        vect = [Configuration all][@"MDME_vectors"];
+        generations = [Configuration all][@"MDME_generations"];
+        scalingFactor = [Configuration all][@"MDME_scalingFactor"];
+        crossProb = [Configuration all][@"MDME_crossProb"];
+        mutProb = [Configuration all][@"MDME_mutProb"];
+        migProb = [Configuration all][@"MDME_migProb"];
+        migrations = [Configuration all][@"MDME_migrations"];
         
         // set threads count according to migrations
         threads = 2;//[migrations intValue];
         groups = 1;
-        dimension = [migrations intValue];
+        dimension = migrations.intValue;
         
         // create grand central dispatch queue:
         queue = dispatch_queue_create("com.cisary.queue",0);
@@ -144,7 +144,7 @@
     // synchronized part: we increment i of the __block dictionary indexes in the begging
     // of the thread so that we have to set -1 because first thread needs 0 as (it's array) index
     //
-    [indexes setValue:[NSNumber numberWithInt:-1]forKey:@"i"];
+    [indexes setValue:@-1 forKey:@"i"];
     
     // dispatch all threads in the <evolution_threads> group with high priority
     //
@@ -165,18 +165,18 @@
                         // get shared object i from NSMutableDictionary allocated once
                         // and save it to newly created local variable
                         //
-                        int _index=[[indexes objectForKey:@"i"]intValue];
+                        int _index=[indexes[@"i"]intValue];
                         
                         // in every thread we use defferent index by incrementing it right away:
                         [indexes
-                         setValue:[NSNumber numberWithInt:_index+1]
+                         setValue:@(_index+1)
                          forKey:@"i"];
                         
                         // set local variables of the block (thread-specific) according to thread index
                         // variable <evolutions> is declared as:
                         // __block NSMutableArray* evolutions; in Coevolution interface itself
                         //
-                        de=[evolutions objectAtIndex: _index ];
+                        de=evolutions[_index];
                     }
                     
                     // async call - main work of the thread: metaevolution itsef:
@@ -188,7 +188,7 @@
                 //
                 @catch(NSException *e) {
                     
-                    NSString *tt= [NSString stringWithFormat:@"\n!\n!\n!Exception: %@",[e name]];
+                    NSString *tt= [NSString stringWithFormat:@"\n!\n!\n!Exception: %@",e.name];
                     
                     /*
                     if ([[e name] isEqualToString:@"generationswithnochange reached!"]){

@@ -13,9 +13,9 @@
 
 @interface Coevolution : NSObject
 
--(id)initAndSeed:(unsigned int) seed;
+-(instancetype)initAndSeed:(unsigned int) seed NS_DESIGNATED_INITIALIZER;
 -(unsigned long) migratingTo64bits:(uint64)index;
--(id)bestEvolution;
+@property (NS_NONATOMIC_IOSONLY, readonly, strong) id bestEvolution;
 -(void)coevolveOptimized;
 -(void)coevolve;
 -(void)analyze;

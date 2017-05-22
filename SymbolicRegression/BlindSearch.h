@@ -43,7 +43,7 @@
 @property(readwrite) double au_;
 @property(readwrite) double bl_;
 @property(readwrite) double bu_;
--(id) initWith64bits:(uint64) bits;
+-(instancetype) initWith64bits:(uint64) bits NS_DESIGNATED_INITIALIZER;
 -(void) search;
 -(void) free;
 @end

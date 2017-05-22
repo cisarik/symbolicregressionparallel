@@ -68,13 +68,13 @@
 #pragma mark -
 #pragma mark init
 
-- (id)init
+- (instancetype)init
 {
 	uint32_t seed = (uint32_t)[NSDate timeIntervalSinceReferenceDate];
 	return [self initWithSeed:seed];
 }
 
-- (id)initWithSeed:(uint32_t)seed
+- (instancetype)initWithSeed:(uint32_t)seed
 {
 	self = [super init];
 	if (self != nil)
@@ -86,7 +86,7 @@
 
 #pragma mark - NSCoding
 
-- (id)initWithCoder:(NSCoder *)coder
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
 	if ((self = [super init]))
 	{
@@ -235,7 +235,7 @@
 
 - (id)mt_randomObjectWithRandom:(MersenneTwister *)r
 {
-	return [self objectAtIndex:[r randomUInt32From:0 to:(uint32_t)self.count-1]];
+	return self[[r randomUInt32From:0 to:(uint32_t)self.count-1]];
 }
 
 @end

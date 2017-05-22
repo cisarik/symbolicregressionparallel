@@ -25,27 +25,27 @@
  
  \return id of newly created instance
  */
--(id) initWith64bits:(uint64) bits {
+-(instancetype) initWith64bits:(uint64) bits {
 	if ( self = [super init] ) {
         
         gfs = [[GFS alloc]initWithFunctionSet:(uint64)bits andSeed:(uint32)time(NULL)];
         
         
         al_=0;
-        au_=[gfs terminalsStartingIndex]-1;
+        au_=gfs.terminalsStartingIndex-1;
         bl_=au_;
-        bu_=[gfs size];
+        bu_=gfs.size;
         
         
         output=[[OUT alloc ]initWithConfiguration:[[Configuration all]copy] andGFS:gfs];
         
         dimension = MAXSIZE;//[gfs size];
         
-        numberVectors = [[[Configuration all] objectForKey:@"DE_vectors"]intValue];
-		numberGenerations = [[[Configuration all] objectForKey:@"DE_generations"]intValue];
+        numberVectors = [[Configuration all][@"DE_vectors"]intValue];
+		numberGenerations = [[Configuration all][@"DE_generations"]intValue];
         
-        scalingFactor = [[[Configuration all] objectForKey:@"DE_scalingFactor"]intValue];
-		probCrossover = [[[Configuration all] objectForKey:@"DE_crossProb"]intValue];
+        scalingFactor = [[Configuration all][@"DE_scalingFactor"]intValue];
+		probCrossover = [[Configuration all][@"DE_crossProb"]intValue];
         
         bestVectorFitness = FLT_MAX;
         metaEvolutionIndividual = 0;

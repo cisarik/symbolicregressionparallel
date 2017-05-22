@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#include <mgl2/mgl_cf.h>
+//#include <mgl2/mgl_cf.h>
 
 
 
@@ -28,10 +28,10 @@
     //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,NULL),^{
     
     //lock = [[NSLock alloc] init];
-    [lock lock];
+//    [lock lock];
     dispatch_async(dispatch_get_main_queue(), ^(void){
         
-        NSString *str = [[NSString alloc] initWithData: [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem] encoding: NSASCIIStringEncoding];
+        NSString *str = [[NSString alloc] initWithData: notification.userInfo[NSFileHandleNotificationDataItem] encoding: NSASCIIStringEncoding];
         
         NSAttributedString* stdOutAttributedString = [[NSAttributedString alloc] initWithString:str];
         
@@ -44,30 +44,30 @@
         
         @synchronized(_console){
             [_console.textStorage appendAttributedString:stdOutAttributedString];
-            [_console.textStorage addAttribute:NSForegroundColorAttributeName value:green range:NSMakeRange(0, [_console.textStorage length])];
+            [_console.textStorage addAttribute:NSForegroundColorAttributeName value:green range:NSMakeRange(0, (_console.textStorage).length)];
             
-            [_console scrollRangeToVisible:NSMakeRange([_console.textStorage length],0)];
+            [_console scrollRangeToVisible:NSMakeRange((_console.textStorage).length,0)];
         }
         
         @synchronized(_bestGraph){
-            HMGL gr = mgl_create_graph(600,400);
-            
-            mgl_set_origin(gr,0,0,0);
-            
-            
-            if ([[[Configuration all] objectForKey:@"function2D"] isEqualTo:@"x^6-2*x^4+x^2"])
-                mgl_set_ranges(gr,-1,1,0,0.17,0,0);
-            else if ([[[Configuration all] objectForKey:@"function2D"] isEqualTo:@"x^5−2*x^3+x"])
-                mgl_set_ranges(gr,-1,1,-2,2,0,0);
-            
-            
-            mgl_axis(gr,"xy","","");
+//            HMGL gr = mgl_create_graph(600,400);
+//            
+//            mgl_set_origin(gr,0,0,0);
+//            
+//            
+//            if ([[[Configuration all] objectForKey:@"function2D"] isEqualTo:@"x^6-2*x^4+x^2"])
+//                mgl_set_ranges(gr,-1,1,0,0.17,0,0);
+//            else if ([[[Configuration all] objectForKey:@"function2D"] isEqualTo:@"x^5−2*x^3+x"])
+//                mgl_set_ranges(gr,-1,1,-2,2,0,0);
+//            
+//            
+//            mgl_axis(gr,"xy","","");
             
             NSArray *tmp = [NSArray arrayWithArray: [str componentsSeparatedByString:@"\n"]];
         
-        if ([tmp count]>3) {
+        if (tmp.count>3) {
             
-            NSString* method=[NSString stringWithString:[tmp objectAtIndex:1]];
+            NSString* method=[NSString stringWithString:tmp[1]];
             
             if ([method isEqualToString:@"Blind Search"]) {
                 
@@ -84,48 +84,48 @@
             }
             
             
-            NSString *expression=[NSString stringWithString:[tmp objectAtIndex:6]];
+            NSString *expression=[NSString stringWithString:tmp[6]];
+//            
+//            mgl_fplot(gr,[[[Configuration all] objectForKey:@"function2D"]UTF8String],"h","");
+//            
+//            mgl_fplot(gr,[expression UTF8String],"","");
             
-            mgl_fplot(gr,[[[Configuration all] objectForKey:@"function2D"]UTF8String],"h","");
-            
-            mgl_fplot(gr,[expression UTF8String],"","");
-            
-            mgl_title(gr,[[NSString stringWithString:[tmp objectAtIndex:7]] UTF8String],"",8.9);
-            mgl_write_frame(gr,"/Users/cisary/SymbolicRegression/SymbolicRegression/graph.png","");
-            mgl_delete_graph(gr);
-            
-            NSImage *graph=[[NSImage alloc]initWithContentsOfFile:@"/Users/cisary/SymbolicRegression/SymbolicRegression/graph.png"];
-            
-            [_bestGraph setImage:graph];
-            
-        } else {
-            mgl_fplot(gr,[[[Configuration all] objectForKey:@"function2D"]UTF8String],"h","");
-            
-            mgl_title(gr,[[[Configuration all] objectForKey:@"function2D"]UTF8String],"",8.9);
-            
-            
-            mgl_write_frame(gr,"/Users/cisary/SymbolicRegression/SymbolicRegression/graph.png","");
-            mgl_delete_graph(gr);
+//            mgl_title(gr,[[NSString stringWithString:[tmp objectAtIndex:7]] UTF8String],"",8.9);
+//            mgl_write_frame(gr,"/Users/cisary/SymbolicRegression/SymbolicRegression/graph.png","");
+//            mgl_delete_graph(gr);
             
             NSImage *graph=[[NSImage alloc]initWithContentsOfFile:@"/Users/cisary/SymbolicRegression/SymbolicRegression/graph.png"];
             
-            [_bestGraph setImage:graph];
+            _bestGraph.image = graph;
+            
+//        } else {
+//            mgl_fplot(gr,[[[Configuration all] objectForKey:@"function2D"]UTF8String],"h","");
+//            
+//            mgl_title(gr,[[[Configuration all] objectForKey:@"function2D"]UTF8String],"",8.9);
+//            
+//            
+//            mgl_write_frame(gr,"/Users/cisary/SymbolicRegression/SymbolicRegression/graph.png","");
+//            mgl_delete_graph(gr);
+            
+//            NSImage *graph=[[NSImage alloc]initWithContentsOfFile:@"/Users/cisary/SymbolicRegression/SymbolicRegression/graph.png"];
+            
+            _bestGraph.image = graph;
             
             
             
         }
         }
     });
-    [lock unlock];
+//    [lock unlock];
 }
 
 -(void)describeGFS:(uint64)bin{
-    [_gfsDescriptionField setStringValue:[NSString stringWithFormat:@"%@",[[GFS alloc]initWithFunctionSet:bin andSeed:(uint32)time(NULL)]]];
+    _gfsDescriptionField.stringValue = [NSString stringWithFormat:@"%@",[[GFS alloc]initWithFunctionSet:bin andSeed:(uint32)time(NULL)]];
 }
 
 -(IBAction)randomize:(id)sender {
     uint64 val=[mt randomUInt32];
-    [_gfsField setStringValue:[NSString stringWithFormat:@"%llu",val]];
+    _gfsField.stringValue = [NSString stringWithFormat:@"%llu",val];
     [self describeGFS:val];
 }
 
@@ -143,7 +143,7 @@
     uint64 val=UINT64_MAX;
     
     if (![[_gfsField stringValue]isEqualToString:@"UINT64 MAX"]) {
-        val=(uint64_t)[_gfsField integerValue];
+        val=(uint64_t)_gfsField.integerValue;
     }
     
     
@@ -170,15 +170,15 @@
 }
 
 -(void)markButton:(NSButton*)button withColor:(NSColor*)color{
-    NSString *title=[button title];
+    NSString *title=button.title;
     NSMutableAttributedString *attrTitle = [[NSMutableAttributedString alloc] initWithString:title];
-    NSUInteger len = [attrTitle length];
+    NSUInteger len = attrTitle.length;
     NSRange range = NSMakeRange(0, len);
     
     NSShadow *shadow = [[NSShadow alloc] init];
-    [shadow setShadowColor:[NSColor blackColor]];
-    [shadow setShadowOffset: NSMakeSize(1, -1)];
-    [shadow setShadowBlurRadius: 5];
+    shadow.shadowColor = [NSColor blackColor];
+    shadow.shadowOffset = NSMakeSize(1, -1);
+    shadow.shadowBlurRadius = 5;
     
     
     //[attrTitle addAttribute:NSBackgroundColorAttributeName value:[NSColor blackColor] range:range];
@@ -186,15 +186,15 @@
     [attrTitle addAttribute:NSShadowAttributeName value:shadow range:range];
     [attrTitle addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:range];
     [attrTitle fixAttributesInRange:range];
-    [button setAttributedTitle:attrTitle];
+    button.attributedTitle = attrTitle;
 }
 
 -(void)applicationWillFinishLaunching:(NSNotification *)notification {
     mt=[[MersenneTwister alloc]init];
-    [_gfsField setStringValue:@"UINT64 MAX"];
+    _gfsField.stringValue = @"UINT64 MAX";
     
     
-    [_BlindSearch setState:NSOffState];
+    _BlindSearch.state = NSOffState;
     
     //[_BlindSearch setButtonType:NSPushOnPushOffButton];
     NSColor *green=[NSColor
@@ -207,15 +207,15 @@
     
     //[_BlindSearch setShadow:shadow];
     [_BlindSearch setShowsBorderOnlyWhileMouseInside:YES];
-    lock=[[NSLock alloc]init];
+//    lock=[[NSLock alloc]init];
     
 }
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification {
         pipe = [NSPipe pipe];
-        pipeReadHandle = [pipe fileHandleForReading];
+        pipeReadHandle = pipe.fileHandleForReading;
     
-        dup2([[pipe fileHandleForWriting] fileDescriptor], fileno(stderr));
+        dup2(pipe.fileHandleForWriting.fileDescriptor, fileno(stderr));
         
         [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(nslog:) name: NSFileHandleReadCompletionNotification object: pipeReadHandle] ;
         [pipeReadHandle readInBackgroundAndNotify];

@@ -10,22 +10,22 @@
 
 @implementation BlindSearch
 @synthesize al_,au_,bl_,bu_;
--(id) initWith64bits:(uint64) bits {
+-(instancetype) initWith64bits:(uint64) bits {
 	if ( self = [super init] ) {
         gfs = [[GFS alloc]initWithFunctionSet:(uint64)bits andSeed:(unsigned int)time(NULL)];
         
         al_=0;
-        au_=[gfs terminalsStartingIndex]-1;
+        au_=gfs.terminalsStartingIndex-1;
         bl_=au_;
-        bu_=[gfs size]-1;
+        bu_=gfs.size-1;
         
         
         output=[[OUT alloc ]initWithConfiguration:[[Configuration all]copy] andGFS:gfs];
         
         dimension = MAXSIZE;//[gfs size];
         
-        numberVectors = [[[Configuration all] objectForKey:@"DE_vectors"]intValue];
-		numberGenerations = [[[Configuration all] objectForKey:@"DE_generations"]intValue];
+        numberVectors = [[Configuration all][@"DE_vectors"]intValue];
+		numberGenerations = [[Configuration all][@"DE_generations"]intValue];
       
         
         mersennetwister = [[MersenneTwister alloc] init];

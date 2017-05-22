@@ -89,7 +89,7 @@
 /*!
  Constructs the DE class, and assigns the values.
  */
--(id) initWith64bits:(uint64) bits;
+-(instancetype) initWith64bits:(uint64) bits NS_DESIGNATED_INITIALIZER;
 
 -(void) free;
 
@@ -121,7 +121,7 @@
 -(void)blind;
 
 // text output:
--(NSString *) description;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *description;
 -(NSString *) describe:(int)w;
 // properites:
 

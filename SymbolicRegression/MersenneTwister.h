@@ -6,27 +6,27 @@
 @interface MersenneTwister : NSObject <NSCoding, NSCopying>
 
 // Initialize with a given seed value.  This is the designated initializer
-- (id)initWithSeed:(uint32_t)seed;
+- (instancetype)initWithSeed:(uint32_t)seed NS_DESIGNATED_INITIALIZER;
 
 // Seed the generator with the current time.
-- (id)init;
+- (instancetype)init;
 
 
 // generates a random number on [0,0xffffffff]-interval
-- (uint32_t)randomUInt32;
+@property (NS_NONATOMIC_IOSONLY, readonly) uint32_t randomUInt32;
 
 // generates a random number on [0,1]-real-interval
-- (double)randomDouble;
+@property (NS_NONATOMIC_IOSONLY, readonly) double randomDouble;
 
 // generates a random number on [0,1)-real-interval
-- (double)randomDouble0To1Exclusive;
+@property (NS_NONATOMIC_IOSONLY, readonly) double randomDouble0To1Exclusive;
 
 @end
 
 
 @interface MersenneTwister (Extras)
 
-- (BOOL)randomBool;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL randomBool;
 
 - (uint32_t)randomUInt32From:(uint32_t)start to:(uint32_t)stop;
 

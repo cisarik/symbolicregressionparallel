@@ -12,7 +12,7 @@
 
 @synthesize al_,au_,bl_,bu_;
 
--(id)initWithFunctionSet:(uint64)bin andDefaultMethod:(NSString*)name
+-(instancetype)initWithFunctionSet:(uint64)bin andDefaultMethod:(NSString*)name
 {
     self = [super init];
     if (self) {
@@ -37,17 +37,17 @@
         defaultMethod=name;
         
         al_=0;
-        au_=[gfs terminalsStartingIndex]-1;
-        bl_=[gfs terminalsStartingIndex];
-        bu_=[gfs size]-1;
+        au_=gfs.terminalsStartingIndex-1;
+        bl_=gfs.terminalsStartingIndex;
+        bu_=gfs.size-1;
         
         
         output=[[OUT alloc ]initWithConfiguration:[[Configuration all]copy] andGFS:gfs];
         
         dimension = MAXSIZE;//[gfs size];
         
-        numberVectors = [[[Configuration all] objectForKey:@"DE_vectors"]intValue];
-		numberGenerations = [[[Configuration all] objectForKey:@"DE_generations"]intValue];
+        numberVectors = [[Configuration all][@"DE_vectors"]intValue];
+		numberGenerations = [[Configuration all][@"DE_generations"]intValue];
         
         
         mersennetwister = [[MersenneTwister alloc] init];

@@ -10,6 +10,6 @@
 #import "Optimization.h"
 
 @interface Heuristic : NSObject 
--(id)initWithGFSbin:(uint64)gfsbin;
+-(instancetype)initWithGFSbin:(uint64)gfsbin NS_DESIGNATED_INITIALIZER;
 -(void)search;
 @end

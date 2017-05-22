@@ -29,7 +29,7 @@
     uint64 bin;
 }
 
-- (id)initWithGFSbin:(uint64)gfsbin
+- (instancetype)initWithGFSbin:(uint64)gfsbin
 {
     self = [super init];
     if (self) {
